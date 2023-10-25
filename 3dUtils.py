@@ -3,7 +3,7 @@ import shutil
 import openpyxl
 from datetime import datetime
 
-debug = True;
+debug = False;
 
 datos_archivos = []
 
@@ -16,7 +16,6 @@ def copy_folders_with_Gcode(source_dir, usb_drive):
                 destination_path = os.path.join(usb_drive, directory)
                 copy_folder(source_path, destination_path)
                     
-
 def copy_folder(source_path, destination_path):
     if not os.path.exists(destination_path):
         copy_new_folder(source_path, destination_path)
@@ -26,10 +25,11 @@ def copy_folder(source_path, destination_path):
 def copy_new_folder(source_path, destination_path):
     shutil.copytree(source_path, destination_path)
     print(f"Copiado: \t{os.path.basename(source_path)}")
-    rellenar_fichero_con_nombres(source_path)
+    if not "Done" in destination_path:
+        rellenar_fichero_con_nombres(source_path)
     
 def copy_existing_folder(source_path, destination_path):
-    removeUnused(source_path, destination_path)
+    remove_old_files(source_path, destination_path)
     for item in os.listdir(source_path):
         source_item = os.path.join(source_path, item)
         destination_item = os.path.join(destination_path, item)
@@ -72,7 +72,7 @@ def rellenar_fichero_con_nombres(source_path):
         for file in files:
             addFormatedDataToCSV(file, source_path)
 
-def removeUnused(source_path, destination_path):
+def remove_old_files(source_path, destination_path):
      for item in os.listdir(destination_path):
         source_item = os.path.join(source_path, item)
         destination_item = os.path.join(destination_path, item)
@@ -88,8 +88,9 @@ def getEasyPath (path):
 
 def addFormatedDataToCSV(source_item, nombrePadre):
     proyect_name = os.path.basename(os.path.dirname(nombrePadre))
-    time_to_print = os.path.basename(source_item)[:5]
+    time_to_print = os.path.basename(source_item)[:5].replace(".", ":") + "h"
     file_name = os.path.basename(source_item)[6:]
+    #TODO: Eliminar los archivos que estan copiados en la carpeta done
     datos_archivos.append([proyect_name, time_to_print, file_name])
 
 def writeXlsx():
