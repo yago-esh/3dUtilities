@@ -90,7 +90,6 @@ def addFormatedDataToCSV(source_item, nombrePadre):
     proyect_name = os.path.basename(os.path.dirname(nombrePadre))
     time_to_print = os.path.basename(source_item)[:5].replace(".", ":") + "h"
     file_name = os.path.basename(source_item)[6:]
-    #TODO: Eliminar los archivos que estan copiados en la carpeta done
     datos_archivos.append([proyect_name, time_to_print, file_name])
 
 def writeXlsx():
