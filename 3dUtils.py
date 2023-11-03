@@ -65,7 +65,7 @@ def copy_existing_file(source_item, destination_item):
     if source_mtime > dest_mtime:
         shutil.copy2(source_item, destination_item)
         print(f"Sobrescrito: \t\t{os.path.basename(source_item)}")
-        addFormatedDataToCSV(source_item)
+        addFormatedDataToCSV(source_item, destination_item)
 
 def rellenar_fichero_con_nombres(source_path):
     for root, dirs, files in os.walk(source_path):
@@ -87,7 +87,7 @@ def getEasyPath (path):
     return directorio_superior + "\\" + nombre_archivo 
 
 def addFormatedDataToCSV(source_item, nombrePadre):
-    proyect_name = os.path.basename(os.path.dirname(nombrePadre))
+    proyect_name = os.path.basename(nombrePadre)
     time_to_print = os.path.basename(source_item)[:5].replace(".", ":") + "h"
     file_name = os.path.basename(source_item)[6:]
     datos_archivos.append([proyect_name, time_to_print, file_name])
@@ -135,7 +135,7 @@ def get_place_to_write(sheet):
 
 if __name__ == "__main__":
     source_directory = "C:\\Users\\yager\\Documents\\Impresion3D"  # Cambia esta ruta a tu directorio de origen
-    usb_drive = "I:"  # Cambia esta letra de unidad a tu USB
+    usb_drive = "H:"  # Cambia esta letra de unidad a tu USB
     if(debug):
         usb_drive = "C:\\Prueba"  # Cambia esta letra de unidad a tu USB
         shutil.rmtree(usb_drive)
